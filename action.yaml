@@ -11,6 +11,7 @@ runs:
   using: 'composite'
   steps:
     - name: Get repo name
+      shell: bash
       run: |
         export repo_name= `echo "${{ github.repository }}" | awk -F '/' '{print $2}'` 
         echo "repo_name=${repo_name}" >> $GITHUB_ENV
