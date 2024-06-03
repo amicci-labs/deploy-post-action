@@ -2,18 +2,13 @@ name: Deploy Post Action
 description: Run post actions required on the end of each deploy
 author: Robson Andrade
 
-#inputs:
-  #gh-token:
-    #description: the github token used to login in the ghcr
-    #required: true
-
 runs:
   using: 'composite'
   steps:
     - name: Get repo name
       shell: bash
       run: |
-        export repo_name= `echo "${{ github.repository }}" | awk -F '/' '{print $2}'` 
+        export repo_name=`echo "${{ github.repository }}" | awk -F '/' '{print $2}'`
         echo "repo_name=${repo_name}" >> $GITHUB_ENV
 
     - name: Clean up untagged images
