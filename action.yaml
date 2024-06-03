@@ -1,0 +1,23 @@
+name: Deploy Post Action
+description: Run post actions required on the end of each deploy
+author: Robson Andrade
+
+#inputs:
+  #gh-token:
+    #description: the github token used to login in the ghcr
+    #required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Get repo name
+      run: |
+        export repo_name= `echo "${{ github.repository }}" | awk -F '/' '{print $2}'` 
+        echo "repo_name=${repo_name}" >> $GITHUB_ENV
+
+    - name: Clean up untagged images
+      uses: i9cloud-tech/delete-untagged-ghcr-action@master
+      with:
+        gh-token: ${{ github.token }}
+        package-name: ${{ env.repo_name }}
+        org: ${{ github.repository_owner }}
