@@ -1,6 +1,7 @@
 name: Deploy Post Action
 description: Run post actions required on the end of each deploy
 author: Robson Andrade
+
 runs:
   using: 'composite'
   steps:
@@ -13,6 +14,6 @@ runs:
     - name: Clean up untagged images
       uses: i9cloud-tech/delete-untagged-ghcr-action@master
       with:
-        gh-token: ${{ github.token }}
-        package-name: ${{ env.repo_name }}
-        org: ${{ github.repository_owner }}
+        GH_TOKEN: ${{ github.token }}
+        PACKAGE_NAME: ${{ env.repo_name }}
+        ORG: ${{ github.repository_owner }}
