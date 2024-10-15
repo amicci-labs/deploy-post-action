@@ -11,19 +11,8 @@ runs:
         export repo_name=`echo "${{ github.repository }}" | awk -F '/' '{print $2}'`
         echo "repo_name=${repo_name}" >> $GITHUB_ENV
 
-    - name: Set up Python environment
-      shell: bash
-      run: |
-        python3 -m venv venv
-        source venv/bin/activate
-        pip install -r /home/runner/work/_actions/i9cloud-tech/delete-untagged-ghcr-action/master/src/required.txt
-
-    - name: Clean up untagged images
-      shell: bash
-      run: |
-        source venv/bin/activate
-        python3 /home/runner/work/_actions/i9cloud-tech/delete-untagged-ghcr-action/master/src/delete-untagged-versions-ghcr.py
-      env:
-        GH_TOKEN: ${{ github.token }}
+    - uses: i9cloud-tech/delete-untagged-ghcr-action@master
+      with:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         PACKAGE_NAME: ${{ env.repo_name }}
         ORG: ${{ github.repository_owner }}
