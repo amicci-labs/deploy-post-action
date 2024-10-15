@@ -16,11 +16,14 @@ runs:
       run: |
         python3 -m venv venv
         source venv/bin/activate
-        pip install -r /home/runner/work/_actions/i9cloud-tech/delete-untagged-ghcr-action/master/src/required.txt
+        pip install -r ${{ github.action_path }}/src/required.txt
 
     - name: Clean up untagged images
-      uses: i9cloud-tech/delete-untagged-ghcr-action@master
-      with:
-        gh-token: ${{ github.token }}
-        package-name: ${{ env.repo_name }}
-        org: ${{ github.repository_owner }}
+      shell: bash
+      run: |
+        source venv/bin/activate
+        python3 ${{ github.action_path }}/src/delete-untagged-versions-ghcr.py
+      env:
+        GH_TOKEN: ${{ github.token }}
+        PACKAGE_NAME: ${{ env.repo_name }}
+        ORG: ${{ github.repository_owner }}
